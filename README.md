@@ -1,52 +1,38 @@
 # Disease Area Dashboard
 
-Disease area market landscape overview and competitor tracking dashboard
+Pharmaceutical market intelligence: brand market share, MAT trends, and competitive tracking.
+
+## Domain Context
+
+Pharma BI analysts use disease area dashboards to track brand performance within a therapy area
+(e.g. Cardiovascular, Oncology, Diabetes). Key metrics: TRx (total prescriptions), NRx (new Rx),
+MAT (Moving Annual Total — 12-month rolling sum to eliminate seasonality), and market share %.
 
 ## Features
-- Data ingestion from CSV/Excel input files
-- Automated analysis and KPI calculation
-- Summary statistics and trend reporting
-- Sample data generator for testing and development
-
-## Installation
-
-```bash
-pip install -r requirements.txt
-```
+- **Market share analysis**: brand TRx/NRx/sales share per period with rank
+- **MAT trend**: 12-month rolling total with YoY growth % per brand
+- **IQVIA/Veeva-compatible**: works with standard pharma data formats
+- **Sample data**: cardiovascular therapy area with 4 competing brands
 
 ## Quick Start
 
 ```python
 from src.main import DiseaseAreaDashboard
 
-analyzer = DiseaseAreaDashboard()
-df = analyzer.load_data("data/sample.csv")
-result = analyzer.analyze(df)
-print(result)
+dash = DiseaseAreaDashboard(config={"therapy_area": "Cardiovascular"})
+df = dash.load_data("sample_data/pharma_sales.csv")
+dash.validate(df)
+
+# Market share by TRx
+share = dash.market_share_analysis(df, metric="trx")
+print(share.pivot(index="brand", columns="period", values="market_share_pct"))
+
+# MAT trend
+mat = dash.mat_trend(df, metric="trx")
+print(mat[mat["brand"] == "Cardivance"])
 ```
 
-## Data Format
-
-Expected CSV columns: `disease, product, company, phase, launch_year, peak_sales_usd_m, market_share_pct`
-
-## Project Structure
-
+## Running Tests
+```bash
+pytest tests/ -v
 ```
-disease-area-dashboard/
-├── src/
-│   ├── main.py          # Core analysis logic
-│   └── data_generator.py # Sample data generator
-├── data/                # Data directory (gitignored for real data)
-├── examples/            # Usage examples
-├── requirements.txt
-└── README.md
-```
-
-## License
-
-MIT License — free to use, modify, and distribute.
-
-## 🚀 New Features (2026-03-02)
-- Add predictive epidemiology module and market sizing templates
-- Enhanced error handling and edge case coverage
-- Comprehensive unit tests and integration examples
