@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-03-05
+### Added
+- `brand_segmentation()`: segments brands into Leader/Challenger/Niche/Declining tiers using share and trend slope
+- `export_report()`: runs full analysis and exports branded market share + segment report to CSV
+- 8 new unit tests covering segmentation, segment validity, and CSV export
+### Improved
+- README updated with brand segmentation usage example and output table
+
 ## [1.2.0] - 2026-03-04
 ### Added
 - `market_share_analysis()`: brand TRx/NRx/sales share per period with ranking

@@ -202,3 +202,78 @@ class DiseaseAreaDashboard:
             else:
                 rows.append({"metric": k, "value": v})
         return pd.DataFrame(rows)
+
+
+    def brand_segmentation(self, df: pd.DataFrame, metric: str = "trx") -> pd.DataFrame:
+        """
+        Segment brands into performance tiers based on share and growth trend.
+
+        Tiers:
+            - Leader: top share, positive or stable growth
+            - Challenger: medium share, gaining growth
+            - Niche: low share, stable or declining
+            - Declining: any share, consistently negative growth
+
+        Args:
+            df: Sales DataFrame with brand, period, and metric columns.
+            metric: Column to use for segmentation (trx, nrx, or sales_usd).
+
+        Returns:
+            DataFrame with brand, avg_share_pct, share_trend, segment label.
+        """
+        share_df = self.market_share_analysis(df, metric=metric)
+        avg_share = share_df.groupby("brand")["market_share_pct"].mean().reset_index()
+        avg_share.columns = ["brand", "avg_share_pct"]
+
+        periods = sorted(share_df["period"].unique()) if "period" in share_df.columns else []
+        trend_rows = []
+        for brand in avg_share["brand"]:
+            brand_data = share_df[share_df["brand"] == brand].sort_values("period")
+            if len(brand_data) >= 2:
+                x = np.arange(len(brand_data))
+                y = brand_data["market_share_pct"].values
+                slope = float(np.polyfit(x, y, 1)[0])
+            else:
+                slope = 0.0
+            trend_rows.append({"brand": brand, "share_trend_slope": round(slope, 4)})
+
+        trend_df = pd.DataFrame(trend_rows)
+        result = avg_share.merge(trend_df, on="brand")
+
+        median_share = result["avg_share_pct"].median()
+
+        def assign_segment(row: pd.Series) -> str:
+            """Assign segment label based on share magnitude and trend direction."""
+            share = row["avg_share_pct"]
+            slope = row["share_trend_slope"]
+            if slope < -0.5:
+                return "Declining"
+            if share >= median_share and slope >= 0:
+                return "Leader"
+            if share < median_share and slope > 0.2:
+                return "Challenger"
+            return "Niche"
+
+        result["segment"] = result.apply(assign_segment, axis=1)
+        return result.sort_values("avg_share_pct", ascending=False).reset_index(drop=True)
+
+    def export_report(self, df: pd.DataFrame, output_path: str = "report.csv") -> str:
+        """
+        Run full analysis and export summary report to CSV.
+
+        Args:
+            df: Sales DataFrame.
+            output_path: Destination file path.
+
+        Returns:
+            Absolute path of written file.
+        """
+        share = self.market_share_analysis(df)
+        segments = self.brand_segmentation(df)
+        combined = share.merge(
+            segments[["brand", "avg_share_pct", "segment"]], on="brand", how="left"
+        )
+        out = Path(output_path)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        combined.to_csv(out, index=False)
+        return str(out.resolve())
