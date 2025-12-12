@@ -330,3 +330,143 @@ class DiseaseAreaDashboard:
         out.parent.mkdir(parents=True, exist_ok=True)
         combined.to_csv(out, index=False)
         return str(out.resolve())
+
+    def segment_prescribers(
+        self,
+        df: pd.DataFrame,
+        prescriber_col: str = "prescriber_id",
+        volume_col: str = "units",
+        brand_col: str = "brand",
+    ) -> pd.DataFrame:
+        """
+        Segment prescribers by prescribing behavior using RFM-style analysis.
+
+        Classifies healthcare professionals (HCPs) into segments based on
+        total prescribing volume and brand loyalty score. Used to prioritize
+        medical rep field activities.
+
+        Args:
+            df: DataFrame with prescriber transactions
+            prescriber_col: Column name for prescriber identifier
+            volume_col: Column name for prescription volume/units
+            brand_col: Column name for brand/drug name
+
+        Returns:
+            DataFrame with prescriber_id, total_units, brand_count,
+            top_brand, loyalty_score, and hcp_segment
+
+        Raises:
+            ValueError: If required columns are missing or DataFrame is empty
+
+        Example:
+            >>> df = pd.DataFrame({
+            ...     "prescriber_id": ["HCP-1", "HCP-1", "HCP-2"],
+            ...     "brand": ["DrugA", "DrugA", "DrugB"],
+            ...     "units": [50, 30, 20],
+            ... })
+            >>> segments = dashboard.segment_prescribers(df)
+            >>> print(segments[["prescriber_id", "hcp_segment"]])
+        """
+        if df.empty:
+            raise ValueError("DataFrame cannot be empty")
+
+        missing = [c for c in (prescriber_col, volume_col, brand_col) if c not in df.columns]
+        if missing:
+            raise ValueError(f"Missing required columns: {missing}")
+
+        df = df.copy()
+        df[volume_col] = pd.to_numeric(df[volume_col], errors="coerce").fillna(0)
+
+        # Aggregate per prescriber
+        agg = df.groupby(prescriber_col).agg(
+            total_units=(volume_col, "sum"),
+            brand_count=(brand_col, "nunique"),
+            top_brand=(volume_col, lambda x: df.loc[x.index, brand_col].iloc[x.values.argmax()]),
+        ).reset_index()
+
+        # Loyalty score: proportion of prescriptions for top brand
+        def loyalty(row):
+            prescriber_df = df[df[prescriber_col] == row[prescriber_col]]
+            by_brand = prescriber_df.groupby(brand_col)[volume_col].sum()
+            if by_brand.sum() == 0:
+                return 0.0
+            return round(float(by_brand.max() / by_brand.sum() * 100), 1)
+
+        agg["loyalty_score_pct"] = agg.apply(loyalty, axis=1)
+
+        # Volume percentile thresholds
+        p75 = agg["total_units"].quantile(0.75)
+        p25 = agg["total_units"].quantile(0.25)
+
+        def classify_hcp(row):
+            if row["total_units"] >= p75 and row["loyalty_score_pct"] >= 70:
+                return "Champion"
+            elif row["total_units"] >= p75:
+                return "High-Volume"
+            elif row["total_units"] >= p25 and row["loyalty_score_pct"] >= 60:
+                return "Loyal-Mid"
+            elif row["total_units"] < p25:
+                return "Low-Activity"
+            else:
+                return "Opportunity"
+
+        agg["hcp_segment"] = agg.apply(classify_hcp, axis=1)
+
+        return agg.sort_values("total_units", ascending=False).reset_index(drop=True)
+
+    def calculate_therapy_area_share_of_voice(
+        self,
+        df: pd.DataFrame,
+        brand_col: str = "brand",
+        detailing_visits_col: str = "detailing_visits",
+    ) -> pd.DataFrame:
+        """
+        Calculate Share of Voice (SoV) for each brand in a therapy area.
+
+        SoV = brand detailing visits / total therapy area visits × 100.
+        Used to benchmark promotion intensity vs market share.
+
+        Args:
+            df: DataFrame with brand detailing activity data
+            brand_col: Column name for brand
+            detailing_visits_col: Column name for detailing visit counts
+
+        Returns:
+            DataFrame with brand, total_visits, share_of_voice_pct, and rank
+
+        Raises:
+            ValueError: If DataFrame is empty or required columns missing
+
+        Example:
+            >>> df = pd.DataFrame({
+            ...     "brand": ["DrugA", "DrugB", "DrugC"],
+            ...     "detailing_visits": [1200, 800, 400],
+            ... })
+            >>> sov = dashboard.calculate_therapy_area_share_of_voice(df)
+            >>> print(sov[["brand", "share_of_voice_pct"]])
+        """
+        if df.empty:
+            raise ValueError("DataFrame cannot be empty")
+        missing = [c for c in (brand_col, detailing_visits_col) if c not in df.columns]
+        if missing:
+            raise ValueError(f"Missing required columns: {missing}")
+
+        df = df.copy()
+        df[detailing_visits_col] = pd.to_numeric(df[detailing_visits_col], errors="coerce").fillna(0)
+
+        brand_totals = df.groupby(brand_col)[detailing_visits_col].sum().reset_index()
+        brand_totals.columns = ["brand", "total_visits"]
+
+        total = brand_totals["total_visits"].sum()
+        if total == 0:
+            brand_totals["share_of_voice_pct"] = 0.0
+        else:
+            brand_totals["share_of_voice_pct"] = round(
+                brand_totals["total_visits"] / total * 100, 1
+            )
+
+        brand_totals["rank"] = brand_totals["share_of_voice_pct"].rank(
+            method="dense", ascending=False
+        ).astype(int)
+
+        return brand_totals.sort_values("rank").reset_index(drop=True)

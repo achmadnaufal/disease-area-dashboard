@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0] - 2026-03-15
+
+### Added
+- **HCP Prescriber Segmentation** — `segment_prescribers()`: Classifies HCPs into Champion/High-Volume/Loyal-Mid/Opportunity/Low-Activity using volume percentiles and brand loyalty score
+- **Share of Voice Calculator** — `calculate_therapy_area_share_of_voice()`: Calculates promotional SoV per brand with ranking for therapy area benchmarking
+- **Unit Tests** — 10 new tests in `tests/test_hcp_segmentation.py` covering segmentation logic, SoV calculation, and edge cases
+- **README** — Added HCP segmentation and Share of Voice usage examples
+
 ## [CURRENT] - 2026-03-07
 
 ### Added
