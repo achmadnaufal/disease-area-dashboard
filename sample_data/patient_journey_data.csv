@@ -1,0 +1,10 @@
+disease_area,brand_name,period,total_diagnosed,treatment_eligible_rate,treatment_initiation_rate,brand_initiation_share,persistence_6m,persistence_12m,notes
+Type 2 Diabetes,BrandX,2024Q4,500000,0.74,0.68,0.28,0.74,0.55,Market leader in GLP-1 class
+Type 2 Diabetes,BrandY,2024Q4,500000,0.74,0.68,0.22,0.68,0.48,Challenger brand - DPP4i class
+Type 2 Diabetes,BrandZ,2024Q4,500000,0.74,0.68,0.15,0.62,0.44,New entrant - SGLT2i class
+Cardiovascular - HFrEF,BrandA,2024Q4,180000,0.65,0.72,0.35,0.78,0.61,ARNi class - established
+Cardiovascular - HFrEF,BrandB,2024Q4,180000,0.65,0.72,0.20,0.71,0.55,Beta-blocker add-on
+Oncology - NSCLC,BrandP,2024Q4,45000,0.82,0.88,0.42,0.69,0.48,EGFR inhibitor - 1L
+Oncology - NSCLC,BrandQ,2024Q4,45000,0.82,0.88,0.28,0.61,0.41,PD-L1 inhibitor - 1L
+Respiratory - Asthma,BrandM,2024Q4,320000,0.78,0.55,0.31,0.71,0.58,Triple therapy ICS/LABA/LAMA
+Respiratory - Asthma,BrandN,2024Q4,320000,0.78,0.55,0.25,0.68,0.52,Biologic (IL-5 inhibitor)
