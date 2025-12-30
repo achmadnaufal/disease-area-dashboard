@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.7.0] - 2026-03-22
+
+### Added
+- **Treatment Switching Analyzer** (`src/treatment_switching_analyzer.py`) — therapy switch flow analysis for disease area BI
+  - `SwitchEvent` dataclass capturing patient, date, from/to drug, therapy line, reason code, and payer type
+  - `SwitchFlowSummary` dataclass with net patient flow, brand-to-generic rate, and competitive loss rate
+  - `brand_switch_summary()` — full switching KPIs for a target brand with therapy line and payer filters
+  - `therapy_line_progression()` — distribution of switch events across Line 1/2/3 with optional patient-level filter
+  - `formulary_signal_detector()` — detects spikes in formulary/step-edit reason codes indicating managed care pressure
+  - `reason_code_distribution()` — switch reason breakdown (cost, efficacy, formulary, physician) filterable by drug pair
+  - Configurable generic-detection heuristics for brand-to-generic rate calculation
+  - Case-insensitive drug name matching throughout
+- **Unit tests** — 25 tests in `tests/test_treatment_switching_analyzer.py` covering all public methods, filters, and edge cases
+
+### References
+- IQVIA Pharmacy Claims Analysis Framework (IQVIA Institute, 2023)
+- PhRMA Medication Switching and Adherence Research Best Practices
+- ISPOR Good Practices for Observational Studies (2022)
+
 ## [1.6.0] - 2026-03-21
 
 ### Added
