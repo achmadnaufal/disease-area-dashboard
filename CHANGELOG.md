@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.0] - 2026-03-23
+
+### Added
+- `src/therapy_line_segmentation.py` — Therapy Line Segmentation engine
+  - `PatientRecord` dataclass with full validation
+  - `TherapyLineSegmentation` class with market share, progression, and channel analytics
+  - `market_share_by_line()` — drug share % within 1L/2L/3L+
+  - `progression_rates()` — % patients progressing to next therapy line
+  - `discontinuation_breakdown()` — reason split with optional line filter
+  - `channel_split()` — hospital/retail/specialty distribution
+  - `full_summary()` — comprehensive segmentation dashboard dict
+- `data/sample_therapy_line_data.csv` — 25 NSCLC patient records across ID/TH/VN
+- 21 unit tests in `tests/test_therapy_line_segmentation.py`
+
 ## [1.7.0] - 2026-03-22
 
 ### Added
