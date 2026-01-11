@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.9.0] - 2026-03-25
+
+### Added
+- **Market Penetration Estimator** (`src/market_penetration_estimator.py`) — patient funnel analysis and opportunity gap sizing
+  - Four-stage patient funnel: Prevalent → Diagnosed → Treated → On Brand
+  - Absolute patient counts derived from population × epidemiological rates
+  - Penetration rates at each funnel stage with multi-level brand penetration views
+  - Gap quantification: undiagnosed patients, untreated diagnosed, competitor-treated
+  - Opportunity scores (0–100) per funnel stage, indicating remaining headroom
+  - Primary opportunity identification (diagnosis/treatment/brand switch)
+  - Stage-specific strategic recommendations for field force and KAM teams
+  - Multi-market comparison sorted by brand opportunity score
+  - Supports both chronic disease (prevalence-based) and acute (incidence-based) modes
+- Unit tests: 17 new tests in `tests/test_market_penetration_estimator.py`
+
 ## [1.8.0] - 2026-03-23
 
 ### Added
