@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.0.0] - 2026-03-26
+
+### Added
+- **RealWorldEvidenceAnalyzer** (`src/real_world_evidence_analyzer.py`) — RWE synthesis for HEOR and payer dossiers
+  - `RWEStudy` dataclass with GRACE checklist score, propensity matching flag, unmeasured confounders
+  - Computed properties: Relative Risk, ARR, NNT, statistical significance, confidence level
+  - GRACE-based confidence classification: HIGH / MODERATE / LOW / VERY_LOW
+  - `synthesize()`: sample-size-weighted aggregate RR across multiple studies
+  - `filter_by_confidence()`: filter study portfolio by minimum evidence quality
+  - `evidence_gap_report()`: identify missing evidence types (long-term, propensity, registry, multi-market)
+  - Narrative summary statement generator for payer/KOL communication
+  - Limitation auto-detection: no propensity matching, unmeasured confounders, single data source
+  - Recommended next study generation based on evidence gaps
+- Unit tests: 16 new tests in `tests/test_real_world_evidence_analyzer.py`
+
 ## [1.9.0] - 2026-03-25
 
 ### Added
