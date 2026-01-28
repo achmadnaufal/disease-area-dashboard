@@ -121,3 +121,22 @@
 - Added comprehensive docstrings to key functions
 - Added error handling for edge cases
 - Improved README with setup and usage examples
+
+## [2.1.0] - 2026-03-27
+
+### Added
+- **Budget Impact Analyzer** (`src/budget_impact_analyzer.py`) — ISPOR-aligned payer Budget Impact Model for new drug market entry
+  - `DrugProfile` dataclass: gross price, rebate%, administration cost, adherence, response rate, hospitalisation offset, AE cost; computed `net_annual_cost_per_patient_usd`, `total_annual_cost_per_patient_usd`, `net_cost_after_offsets_usd` properties
+  - `EligiblePopulation` dataclass: population funnel (prevalence→diagnosed→treated→eligible) with annual growth factor
+  - `MarketShare` dataclass: year-indexed market share trajectory per drug
+  - `BudgetImpactAnalyzer` class (1–5 year forecast horizon)
+  - `run()`: full budget impact run returning annual `BudgetImpactResult` per year (with/without new drug)
+  - `cumulative_impact()`: aggregated total and average annual incremental cost over horizon
+  - `sensitivity_analysis()`: one-way price sensitivity (±N% list price) across configured variations
+  - `BudgetImpactResult.is_cost_saving` property for downstream logic
+  - Without-scenario: new drug share redistributed proportionally to comparator drugs
+- **Unit tests** — 37 new tests in `tests/test_budget_impact_analyzer.py` covering all classes, run scenarios, edge cases
+
+### References
+- Sullivan et al. (2014) ISPOR Good Practice Guidelines for BIM. Value in Health 17(1):5–14
+- NICE (2022) NICE Health Technology Evaluations: Methods Guide §6
