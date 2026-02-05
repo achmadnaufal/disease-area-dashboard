@@ -1,0 +1,5 @@
+patient_id,disease_area,metric_name,metric_value,measurement_date
+P001,oncology,efficacy_rate,85.5,2024-01-15
+P002,oncology,safety_score,92.3,2024-01-20
+P003,cardiology,efficacy_rate,78.2,2024-02-10
+P004,cardiology,safety_score,88.5,2024-02-15
