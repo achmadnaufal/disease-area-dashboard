@@ -1,80 +1,133 @@
-# disease-area-dashboard
+# Disease Area Dashboard
 
-**Domain:** Pharma BI
+![Python](https://img.shields.io/badge/python-3.9%2B-blue?logo=python) ![License](https://img.shields.io/badge/license-MIT-green) ![Last Commit](https://img.shields.io/github/last-commit/achmadnaufal/disease-area-dashboard)
+
+Pharma BI dashboard for disease area market intelligence — brand market share, MAT trend tracking, HCP segmentation, and Share of Voice analytics using IQVIA/Veeva CRM-style data.
 
 ## Features
-- Add epidemiological metrics (prevalence, incidence)
-- Comprehensive documentation and examples
 
-## Getting Started
+- **Market share analysis** — TRx/NRx/sales share by brand and period
+- **MAT trend (Moving Annual Total)** — 12-month rolling totals per brand with YoY growth
+- **Brand segmentation** — Leader / Challenger / Niche / Declining tiers via slope regression
+- **Share of Voice** — detailing visit share by brand for promotion benchmarking
+- **HCP prescriber segmentation** — Champion / High-Volume / Loyal-Mid / Low-Activity / Opportunity
+- **Budget impact analysis** — therapy area cost modelling
+- **Adverse event tracking** — pharmacovigilance signal detection
+- Supports CSV and Excel input (IQVIA, Veeva CRM, in-house formats)
 
-### Installation
+## Installation
+
+**Step 1: Clone the repository**
+```bash
+git clone https://github.com/achmadnaufal/disease-area-dashboard.git
+cd disease-area-dashboard
+```
+
+**Step 2: Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-### Quick Example
-```python
-# See examples/ directory for complete examples
+## Usage
+
+**Step 3: Run the demo**
+```bash
+python3 demo/run_demo.py
 ```
 
-## Configuration
-Detailed configuration options in `config/` directory.
+**Step 4: Use in your own code**
+```python
+from src.main import DiseaseAreaDashboard
+
+dash = DiseaseAreaDashboard(config={"therapy_area": "Cardiovascular"})
+df = dash.load_data("sample_data/pharma_sales.csv")
+
+share = dash.market_share_analysis(df, metric="trx")
+mat   = dash.mat_trend(df, metric="trx")
+segs  = dash.brand_segmentation(df)
+sov   = dash.calculate_therapy_area_share_of_voice(detailing_df)
+```
+
+**Step 5: Export report**
+```python
+path = dash.export_report(df, output_path="output/report.csv")
+```
+
+## Data Format
+
+Expected CSV columns:
+```
+period, brand, trx, nrx, sales_usd, channel
+```
+
+## Example Output
+
+```
+$ python3 demo/run_demo.py
+==============================================================
+  Disease Area Dashboard — Demo (Cardiovascular Therapy Area)
+==============================================================
+
+✓ Loaded 16 prescription records
+  Brands: ['Cardivance', 'HyperControl', 'Norvalpha', 'Vascuban']
+  Periods: 4 months | Channels: 2
+
+✓ Market Share Analysis (TRx) — 2025-04:
+  Brand               TRx    Share %   Rank
+  -----------------------------------------
+  Cardivance        4,650      35.3%  #1
+  HyperControl      3,300      25.1%  #2
+  Norvalpha         3,100      23.5%  #3
+  Vascuban          2,120      16.1%  #4
+
+✓ MAT Trend (Moving Annual Total — last period):
+  Brand             MAT TRx    MAT Growth %
+  ------------------------------------------
+  Cardivance         17,700             N/A
+  HyperControl       12,650             N/A
+  Norvalpha          11,870             N/A
+  Vascuban            8,050             N/A
+
+✓ Brand Segmentation:
+  Brand           Avg Share %  Trend Slope    Segment
+  ---------------------------------------------------
+  Cardivance            35.2%       0.0720     Leader
+  HyperControl          25.2%      -0.2110      Niche
+  Norvalpha             23.6%       0.0720      Niche
+  Vascuban              16.0%       0.0730      Niche
+
+✓ Share of Voice (Detailing Visits):
+  Brand             Visits    SoV %   Rank
+  ----------------------------------------
+  Cardivance         1,250    40.3%  #1
+  HyperControl         840    27.1%  #2
+  Norvalpha            620    20.0%  #3
+  Vascuban             390    12.6%  #4
+
+==============================================================
+  ✅ Demo complete
+==============================================================
+```
+
+## Architecture
+
+```mermaid
+graph TD
+    A[CSV / Excel\nIQVIA / Veeva CRM] --> B[DiseaseAreaDashboard]
+    B --> C[Market Share\nTRx · NRx · Sales]
+    B --> D[MAT Trend\n12-month rolling]
+    B --> E[Brand Segmentation\nLeader/Challenger/Niche]
+    B --> F[Share of Voice\nDetailing visits]
+    B --> G[HCP Segmentation\nChampion/High-Vol/Loyal]
+    C & D & E & F & G --> H[CSV Report Export]
+```
 
 ## Testing
+
 ```bash
 pytest tests/ -v
 ```
 
-## Edge Cases Handled
-- Null/empty input validation
-- Boundary condition testing
-- Type safety checks
+---
 
-## Contributing
-See CONTRIBUTING.md for guidelines.
-
-## License
-MIT
-
-
-## Usage Examples
-
-### HCP Prescriber Segmentation
-
-```python
-from src.main import DiseaseAreaDashboard
-import pandas as pd
-
-dashboard = DiseaseAreaDashboard()
-
-prescribers = pd.read_csv("data/hcp_transactions.csv")
-segments = dashboard.segment_prescribers(
-    prescribers,
-    prescriber_col="hcp_id",
-    volume_col="rx_units",
-    brand_col="brand_name",
-)
-print(segments[["hcp_id", "total_units", "loyalty_score_pct", "hcp_segment"]])
-# Output: ranked HCPs with segment labels for targeting prioritization
-```
-
-### Share of Voice Analysis
-
-```python
-detailing = pd.read_csv("data/field_force_activity.csv")
-sov = dashboard.calculate_therapy_area_share_of_voice(
-    detailing,
-    brand_col="brand",
-    detailing_visits_col="visits",
-)
-print(sov[["brand", "share_of_voice_pct", "rank"]])
-```
-
-Refer to the `tests/` directory for comprehensive example implementations.
-
-## Edge Case Handling
-
-This version includes improved validation and edge case handling across all data inputs.
-See sample_data/realistic_data.csv for example datasets.
-
+> Built by [Achmad Naufal](https://github.com/achmadnaufal) | Lead Data Analyst | Power BI · SQL · Python · GIS
