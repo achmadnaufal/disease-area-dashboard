@@ -1,3 +1,22 @@
+## [1.1.0] - 2026-03-31
+
+### Added
+- **Clinical Trial Screener** (`src/clinical_trial_screener.py`) — CTCAE v5.0-aligned patient eligibility checker for oncology and rare disease trials
+  - `PatientProfile` dataclass: age, ECOG status, diagnosis ICD-10, stage, prior therapy lines, labs, comorbidities, pregnancy, brain mets, active infection
+  - `TrialProtocol` dataclass: configurable inclusion/exclusion criteria (age, ECOG, stage, CrCl, liver function, ANC, comorbidity codes)
+  - `ClinicalTrialScreener.screen()`: criterion-by-criterion eligibility with ELIGIBLE/INELIGIBLE/NEEDS_REVIEW output
+  - `LabValue.times_uln`: auto-computed ALT/AST/bilirubin as × Upper Limit of Normal
+  - `batch_screen()`, `eligible_patients()`, `enrolment_funnel()` for recruitment planning
+  - ECOG PS0–PS4 status validation with configurable max acceptable PS
+  - Renal/hepatic exclusion logic (CrCl, ALT, AST, bilirubin, ANC)
+  - Comorbidity ICD-10 prefix exclusion matching
+- **Unit tests** — 28 new tests in `tests/test_clinical_trial_screener.py` (all passing)
+
+### References
+- NCI CTCAE v5.0 (2017) Common Terminology Criteria for Adverse Events.
+- ECOG-ACRIN (2020) ECOG Performance Status Scale.
+- ICH E6(R2) (2016) Guideline for Good Clinical Practice.
+
 ## [New] - 2026-03-28
 ### Added
 - Edge case validators and handlers
