@@ -45,3 +45,8 @@ disease-area-dashboard/
 ## License
 
 MIT License — free to use, modify, and distribute.
+
+## 🚀 New Features (2026-03-02)
+- Add predictive epidemiology module and market sizing templates
+- Enhanced error handling and edge case coverage
+- Comprehensive unit tests and integration examples
