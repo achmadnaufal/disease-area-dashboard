@@ -1,3 +1,15 @@
+## [1.2.0] - 2026-04-01
+
+### Added
+- **Patient Risk Stratifier** (`src/patient_risk_stratifier.py`) — Charlson Comorbidity Index (CCI) risk stratification for oncology and chronic disease populations
+  - `PatientProfile` dataclass: age, ECOG PS (0–4), comorbidities (17 validated CCI conditions), creatinine, albumin, metastatic disease flag
+  - `PatientRiskStratifier.stratify()`: base CCI, age-adjusted CCI (Deyo 1992 +1/decade ≥50), Charlson 10-year survival estimate, risk tier (LOW/MODERATE/HIGH/VERY_HIGH)
+  - Lab flags: elevated creatinine (>1.5 mg/dL) and hypoalbuminemia (<3.5 g/dL)
+  - ECOG PS modifier: automated clinical recommendation adjustment for PS ≥2
+  - `batch_stratify()`, `population_summary()` for trial and population health analytics
+  - References: Charlson et al. (1987) J Chronic Dis; Deyo et al. (1992) J Clin Epidemiol
+- **Unit tests** — 17 new tests in `tests/test_patient_risk_stratifier.py` (all passing)
+
 ## [1.1.0] - 2026-03-31
 
 ### Added
