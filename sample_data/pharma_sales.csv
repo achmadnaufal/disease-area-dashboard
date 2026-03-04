@@ -1,0 +1,17 @@
+period,brand,molecule,trx,nrx,sales_usd,channel
+2025-01,Cardivance,Amlodipine-Olmesartan,4200,1050,189000,Hospital
+2025-01,HyperControl,Losartan,3100,780,116250,Hospital
+2025-01,Norvalpha,Amlodipine,2800,700,105000,Retail
+2025-01,Vascuban,Valsartan,1900,475,71250,Hospital
+2025-02,Cardivance,Amlodipine-Olmesartan,4350,1090,195750,Hospital
+2025-02,HyperControl,Losartan,3050,765,114375,Hospital
+2025-02,Norvalpha,Amlodipine,2920,730,109500,Retail
+2025-02,Vascuban,Valsartan,1980,495,74250,Hospital
+2025-03,Cardivance,Amlodipine-Olmesartan,4500,1125,202500,Hospital
+2025-03,HyperControl,Losartan,3200,800,120000,Hospital
+2025-03,Norvalpha,Amlodipine,3050,765,114375,Retail
+2025-03,Vascuban,Valsartan,2050,515,76875,Hospital
+2025-04,Cardivance,Amlodipine-Olmesartan,4650,1165,209250,Hospital
+2025-04,HyperControl,Losartan,3300,825,123750,Hospital
+2025-04,Norvalpha,Amlodipine,3100,775,116250,Retail
+2025-04,Vascuban,Valsartan,2120,530,79500,Hospital
