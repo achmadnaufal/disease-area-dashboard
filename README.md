@@ -36,3 +36,22 @@ print(mat[mat["brand"] == "Cardivance"])
 ```bash
 pytest tests/ -v
 ```
+
+---
+
+## [v1.3.0] Brand Segmentation
+
+Segment brands into performance tiers for competitive positioning:
+
+```python
+# Segment brands into Leader / Challenger / Niche / Declining
+segments = dash.brand_segmentation(df, metric="trx")
+print(segments[["brand", "avg_share_pct", "share_trend_slope", "segment"]])
+#      brand  avg_share_pct  share_trend_slope  segment
+# 0  BrandA          50.2              0.08     Leader
+# 1  BrandB          33.1             -0.03     Niche
+# 2  BrandC          16.7              0.21     Challenger
+
+# Export full report to CSV
+path = dash.export_report(df, output_path="reports/cv_landscape.csv")
+```

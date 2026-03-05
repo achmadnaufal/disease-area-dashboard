@@ -2,6 +2,7 @@
 import pytest
 import pandas as pd
 import sys
+from pathlib import Path
 sys.path.insert(0, "/Users/johndoe/projects/disease-area-dashboard")
 from src.main import DiseaseAreaDashboard
 
@@ -83,3 +84,44 @@ class TestMATTrend:
         df = pd.DataFrame({"brand": ["A", "B"], "trx": [100, 200]})
         with pytest.raises(ValueError, match="period"):
             dash.mat_trend(df)
+
+
+class TestBrandSegmentation:
+    def test_returns_dataframe(self, dash, sales_df):
+        result = dash.brand_segmentation(sales_df)
+        assert isinstance(result, pd.DataFrame)
+
+    def test_all_brands_present(self, dash, sales_df):
+        result = dash.brand_segmentation(sales_df)
+        assert set(result["brand"]) == {"BrandA", "BrandB", "BrandC"}
+
+    def test_segment_column_present(self, dash, sales_df):
+        result = dash.brand_segmentation(sales_df)
+        assert "segment" in result.columns
+
+    def test_valid_segments(self, dash, sales_df):
+        result = dash.brand_segmentation(sales_df)
+        valid_segments = {"Leader", "Challenger", "Niche", "Declining"}
+        assert set(result["segment"]).issubset(valid_segments)
+
+    def test_brand_a_is_leader_or_niche(self, dash, sales_df):
+        result = dash.brand_segmentation(sales_df)
+        brand_a_seg = result[result["brand"] == "BrandA"]["segment"].values[0]
+        assert brand_a_seg in {"Leader", "Challenger", "Niche", "Declining"}
+
+    def test_nrx_metric_works(self, dash, sales_df):
+        result = dash.brand_segmentation(sales_df, metric="nrx")
+        assert "segment" in result.columns
+
+
+class TestExportReport:
+    def test_export_creates_file(self, dash, sales_df, tmp_path):
+        out = str(tmp_path / "report.csv")
+        path = dash.export_report(sales_df, output_path=out)
+        assert Path(path).exists()
+
+    def test_export_has_segment_column(self, dash, sales_df, tmp_path):
+        out = str(tmp_path / "report.csv")
+        dash.export_report(sales_df, output_path=out)
+        result = pd.read_csv(out)
+        assert "segment" in result.columns
