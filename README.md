@@ -130,4 +130,10 @@ pytest tests/ -v
 
 ---
 
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. PRs welcome — especially IQVIA Symphony Health data format readers, forecast modelling (Prophet/ARIMA), or Streamlit dashboard integrations.
+
+---
+
 > Built by [Achmad Naufal](https://github.com/achmadnaufal) | Lead Data Analyst | Power BI · SQL · Python · GIS
