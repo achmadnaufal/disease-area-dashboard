@@ -257,6 +257,59 @@ class DiseaseAreaDashboard:
         result["segment"] = result.apply(assign_segment, axis=1)
         return result.sort_values("avg_share_pct", ascending=False).reset_index(drop=True)
 
+    def track_adverse_events(self, df: pd.DataFrame) -> Dict[str, Any]:
+        """
+        Track adverse events and safety signals by brand for compliance monitoring.
+        
+        Assumes df has columns: brand, adverse_events (count), serious_adverse_events (count).
+        Identifies brands with elevated adverse event rates for pharmacovigilance review.
+        
+        Args:
+            df: DataFrame with brand adverse event data.
+            
+        Returns:
+            Dictionary with:
+            - total_adverse_events: Total AE count across therapy area
+            - ae_per_brand: AE counts and rates per brand
+            - high_risk_brands: Brands exceeding 95th percentile AE rate
+            - serious_ae_rate: Serious AE as % of total AE
+            
+        Example:
+            >>> df = pd.DataFrame({...brands and AE data...})
+            >>> safety = dashboard.track_adverse_events(df)
+            >>> print(f"High-risk brands: {safety['high_risk_brands']}")
+        """
+        if df.empty:
+            return {}
+        
+        # Ensure required columns exist
+        if "adverse_events" not in df.columns:
+            return {"error": "adverse_events column required"}
+        
+        total_ae = df["adverse_events"].sum()
+        serious_ae = df.get("serious_adverse_events", pd.Series(0)).sum()
+        serious_ae_rate = (serious_ae / total_ae * 100) if total_ae > 0 else 0
+        
+        # Calculate AE rate per brand
+        ae_by_brand = df.groupby("brand").agg({
+            "adverse_events": "sum",
+            "serious_adverse_events": lambda x: x.sum() if "serious_adverse_events" in df.columns else 0,
+        }).reset_index()
+        
+        ae_by_brand["ae_rate"] = ae_by_brand["adverse_events"] / ae_by_brand["adverse_events"].sum() * 100
+        
+        # Identify high-risk brands (>95th percentile)
+        ae_threshold = ae_by_brand["ae_rate"].quantile(0.95)
+        high_risk = ae_by_brand[ae_by_brand["ae_rate"] > ae_threshold]["brand"].tolist()
+        
+        return {
+            "total_adverse_events": int(total_ae),
+            "serious_adverse_event_rate": round(serious_ae_rate, 1),
+            "ae_per_brand": ae_by_brand.to_dict("records"),
+            "high_risk_brands": high_risk,
+            "pharmacovigilance_review_required": len(high_risk) > 0,
+        }
+
     def export_report(self, df: pd.DataFrame, output_path: str = "report.csv") -> str:
         """
         Run full analysis and export summary report to CSV.
