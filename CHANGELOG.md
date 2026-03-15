@@ -1,3 +1,10 @@
+## [1.3.0] - 2026-04-02
+
+### Added
+- **ComorbidityNetworkAnalyzer** (`src/comorbidity_network_analyzer.py`) — Network-based disease co-occurrence analysis with Jaccard phi RR edges cluster detection hub identification and multimorbidity statistics
+- **Unit tests** — new comprehensive test suite in `tests/test_comorbidity_network_analyzer.py`
+- **CHANGELOG** updated to v1.3.0
+
 ## [1.2.0] - 2026-04-01
 
 ### Added
