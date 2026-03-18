@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0] - 2026-03-18
+
+### Added
+- **Patient Journey Funnel Analysis** (`src/patient_journey_funnel.py`) — end-to-end patient pathway modelling
+  - `FunnelStage` dataclass with conversion rates, drop counts, and drop reasons
+  - `PatientJourneyFunnel` with overall conversion rate, biggest-drop stage identification, and summary reporting
+  - `PatientJourneyAnalyzer.build_funnel()`: constructs 6-stage funnel (diagnosed → maintained 12m) from conversion rates
+  - `opportunity_score()`: quantifies commercial gap at each stage (untreated, competitor share, persistence gaps)
+  - `compare_brands()`: side-by-side funnel comparison sorted by 12-month retention
+  - Industry benchmark rates from IQVIA/Veeva frameworks
+- **Sample data** — `sample_data/patient_journey_data.csv` with 9 brand scenarios across T2D, CVD, Oncology, Respiratory
+- **Unit tests** — 29 tests in `tests/test_patient_journey.py` covering funnel construction, opportunity scoring, and edge cases
+
 ## [1.4.0] - 2026-03-15
 
 ### Added
