@@ -1,0 +1,11 @@
+brand,geography,kpi_type,period,current_value,previous_value,notes
+Oncobrand A,Indonesia,market_share,2026-03,18.2,23.5,Competitor launched in Feb
+Oncobrand A,Thailand,market_share,2026-03,31.4,30.8,Stable growth
+Cardio-RX,Indonesia,nrx_volume,2026-03,8450,10200,Feb seasonality effect
+Cardio-RX,Vietnam,nrx_volume,2026-03,5820,5500,Positive territory expansion
+Diabetes-X,Indonesia,persistence_6m,2026-03,58.5,72.0,High discontinuation due to side effects
+Diabetes-X,Thailand,persistence_6m,2026-03,67.2,69.0,Slight decline
+Respiratory-Z,Indonesia,trx_volume,2026-03,12300,12800,Within normal range
+Respiratory-Z,Vietnam,trx_volume,2026-03,6100,8400,Distributor stocking issue
+Neurology-M,Indonesia,conversion_rate,2026-03,43.0,61.0,Low specialist referrals
+Neurology-M,Thailand,conversion_rate,2026-03,62.5,60.0,Improving

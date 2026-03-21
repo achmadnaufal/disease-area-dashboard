@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.0] - 2026-03-21
+
+### Added
+- **KPI Alert Engine** (`src/kpi_alert_engine.py`) — automated KPI threshold monitoring for commercial analytics
+  - Monitors market share, NRx/TRx volume, persistence (6m/12m), and conversion rate KPIs
+  - Three severity levels: info, warning, critical
+  - `evaluate()` returns sorted alerts (critical first)
+  - `get_critical_alerts()` for dashboard priority view
+  - `summary()` counts by severity for reporting headers
+  - Configurable thresholds via constructor override
+  - `KPISnapshot` and `KPIAlert` dataclasses for structured I/O
+- **Sample data** — `sample_data/kpi_snapshots_sample.csv` with 10 brand-geography-KPI combinations
+- **Unit tests** — 20 new tests in `tests/test_kpi_alert_engine.py`
+
 ## [1.5.0] - 2026-03-18
 
 ### Added
