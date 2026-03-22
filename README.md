@@ -1,6 +1,8 @@
 # Disease Area Dashboard
 
-![Python](https://img.shields.io/badge/python-3.9%2B-blue?logo=python) ![License](https://img.shields.io/badge/license-MIT-green) ![Last Commit](https://img.shields.io/github/last-commit/achmadnaufal/disease-area-dashboard)
+![Python](https://img.shields.io/badge/python-3.9%2B-blue?logo=python)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Last Commit](https://img.shields.io/github/last-commit/achmadnaufal/disease-area-dashboard)
 
 Pharma BI dashboard for disease area market intelligence — brand market share, MAT trend tracking, HCP segmentation, and Share of Voice analytics using IQVIA/Veeva CRM-style data.
 
@@ -14,6 +16,16 @@ Pharma BI dashboard for disease area market intelligence — brand market share,
 - **Budget impact analysis** — therapy area cost modelling
 - **Adverse event tracking** — pharmacovigilance signal detection
 - Supports CSV and Excel input (IQVIA, Veeva CRM, in-house formats)
+
+## Tech Stack
+
+| Tool | Purpose |
+|---|---|
+| **Python 3.9+** | Core language |
+| **pandas / numpy** | Data manipulation |
+| **scipy** | Statistical segmentation |
+| **openpyxl** | Excel file support |
+| **pytest** | Unit testing |
 
 ## Installation
 
@@ -53,62 +65,6 @@ sov   = dash.calculate_therapy_area_share_of_voice(detailing_df)
 path = dash.export_report(df, output_path="output/report.csv")
 ```
 
-## Data Format
-
-Expected CSV columns:
-```
-period, brand, trx, nrx, sales_usd, channel
-```
-
-## Example Output
-
-```
-$ python3 demo/run_demo.py
-==============================================================
-  Disease Area Dashboard — Demo (Cardiovascular Therapy Area)
-==============================================================
-
-✓ Loaded 16 prescription records
-  Brands: ['Cardivance', 'HyperControl', 'Norvalpha', 'Vascuban']
-  Periods: 4 months | Channels: 2
-
-✓ Market Share Analysis (TRx) — 2025-04:
-  Brand               TRx    Share %   Rank
-  -----------------------------------------
-  Cardivance        4,650      35.3%  #1
-  HyperControl      3,300      25.1%  #2
-  Norvalpha         3,100      23.5%  #3
-  Vascuban          2,120      16.1%  #4
-
-✓ MAT Trend (Moving Annual Total — last period):
-  Brand             MAT TRx    MAT Growth %
-  ------------------------------------------
-  Cardivance         17,700             N/A
-  HyperControl       12,650             N/A
-  Norvalpha          11,870             N/A
-  Vascuban            8,050             N/A
-
-✓ Brand Segmentation:
-  Brand           Avg Share %  Trend Slope    Segment
-  ---------------------------------------------------
-  Cardivance            35.2%       0.0720     Leader
-  HyperControl          25.2%      -0.2110      Niche
-  Norvalpha             23.6%       0.0720      Niche
-  Vascuban              16.0%       0.0730      Niche
-
-✓ Share of Voice (Detailing Visits):
-  Brand             Visits    SoV %   Rank
-  ----------------------------------------
-  Cardivance         1,250    40.3%  #1
-  HyperControl         840    27.1%  #2
-  Norvalpha            620    20.0%  #3
-  Vascuban             390    12.6%  #4
-
-==============================================================
-  ✅ Demo complete
-==============================================================
-```
-
 ## Architecture
 
 ```mermaid
@@ -122,15 +78,62 @@ graph TD
     C & D & E & F & G --> H[CSV Report Export]
 ```
 
+## Screenshots / Demo Output
+
+```
+$ python3 demo/run_demo.py
+==============================================================
+  Disease Area Dashboard — Demo (Cardiovascular Therapy Area)
+==============================================================
+
+✓ Loaded 16 prescription records
+  Brands: ['Cardivance', 'HyperControl', 'Norvalpha', 'Vascuban']
+  Periods: 4 months | Channels: 2
+
+✓ Market Share Analysis (TRx) — 2025-04:
+  Brand                   TRx    Share %   Rank
+  ---------------------------------------------
+  Cardivance            4,650      35.3%  #1
+  HyperControl          3,300      25.1%  #2
+  Norvalpha             3,100      23.5%  #3
+  Vascuban              2,120      16.1%  #4
+
+✓ MAT Trend (Moving Annual Total — last period):
+  Brand                 MAT TRx    MAT Growth %
+  ------------------------------------------------
+  Cardivance             17,700             N/A
+  HyperControl           12,650             N/A
+  Norvalpha              11,870             N/A
+  Vascuban                8,050             N/A
+
+✓ Brand Segmentation:
+  Brand               Avg Share %   Trend Slope       Segment
+  ---------------------------------------------------------
+  Cardivance                35.2%        0.0720        Leader
+  HyperControl              25.2%       -0.2110         Niche
+  Norvalpha                 23.6%        0.0720         Niche
+  Vascuban                  16.0%        0.0730         Niche
+
+✓ Share of Voice (Detailing Visits):
+  Brand                Visits    SoV %   Rank
+  ------------------------------------------
+  Cardivance            1,250    40.3%  #1
+  HyperControl            840    27.1%  #2
+  Norvalpha               620    20.0%  #3
+  Vascuban               390    12.6%  #4
+
+==============================================================
+  ✅ Demo complete
+==============================================================
+```
+
 ## Testing
 
 ```bash
 pytest tests/ -v
 ```
 
----
-
-## 🤝 Contributing
+## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. PRs welcome — especially IQVIA Symphony Health data format readers, forecast modelling (Prophet/ARIMA), or Streamlit dashboard integrations.
 
