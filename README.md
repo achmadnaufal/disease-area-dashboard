@@ -14,7 +14,7 @@ Pharma BI dashboard for disease area market intelligence — brand market share,
 - **Share of Voice** — detailing visit share by brand for promotion benchmarking
 - **HCP prescriber segmentation** — Champion / High-Volume / Loyal-Mid / Low-Activity / Opportunity
 - **Budget impact analysis** — therapy area cost modelling
-- **Adverse event tracking** — pharmacovigilance signal detection
+- **Pharmacovigilance signal detection** — PRR/ROR disproportionality analysis, BCPNN/EBGM Bayesian screening, temporal Poisson scan, subpopulation-stratified signals, and composite priority ranking
 - Supports CSV and Excel input (IQVIA, Veeva CRM, in-house formats)
 
 ## Tech Stack
@@ -58,6 +58,19 @@ share = dash.market_share_analysis(df, metric="trx")
 mat   = dash.mat_trend(df, metric="trx")
 segs  = dash.brand_segmentation(df)
 sov   = dash.calculate_therapy_area_share_of_voice(detailing_df)
+
+# Pharmacovigilance — adverse event signal detection
+from src.pharmacovigilance import SignalDetector, AEReport
+import pandas as pd
+
+reports = pd.read_csv("sample_data/adverse_event_reports.csv")
+detector = SignalDetector()
+signals = detector.disproportionality_analysis(reports, min_reports=3)
+bayesian = detector.bayesian_screen(reports)
+ranked = detector.priority_ranking(signals, top_n=10)
+print(ranked.head())
+report = detector.generate_report(reports, top_n=20, min_reports=3)
+print(report[["drug", "event", "composite_score", "recommended_action"]])
 ```
 
 **Step 5: Export report**

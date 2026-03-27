@@ -1,3 +1,23 @@
+## [0.6.0] - 2026-04-14
+
+### Added
+- **PharmacovigilanceSignalDetector** (`src/pharmacovigilance.py`)
+  - `SignalDetector`: AE signal detection using PRR/ROR and BCPNN Bayesian methods
+  - `disproportionality_analysis()`: PRR + ROR calculation per drug-event pair
+  - `bayesian_screen()`: BCPNN/EBGM empirical Bayes geometric mean
+  - `temporal_scan()`: Poisson-based temporal trend detection
+  - `stratified_signal()`: subpopulation-specific signal concentration detection
+  - `priority_ranking()`: composite PRR/ROR/EBGM signal ranking
+  - `generate_report()`: top-N ranked signal report with recommended action
+  - `AEReport` dataclass: drug, event, age, region, seriousness, outcome
+- **Unit tests** — 25+ tests in `tests/test_pharmacovigilance.py`
+- **Sample data** — `sample_data/adverse_event_reports.csv` (120 CV/oncology AE reports)
+
+### References
+- EMA (2023) GVP Module VIII — Pharmacovigilance Signal Detection
+- DuMouchel W. (1999) Bayesian Data Mining in Large Frequency Tables, AJAI
+- WHO Uppsala Monitoring Centre — ROR methodology
+
 ## [1.3.0] - 2026-04-02
 
 ### Added
