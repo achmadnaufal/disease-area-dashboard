@@ -130,7 +130,7 @@ class RWEStudy:
     @property
     def absolute_risk_reduction_pct(self) -> float:
         """Absolute Risk Reduction (ARR) in percentage points."""
-        return self.comparator_event_rate_pct - self.brand_event_rate_pct
+        return self.brand_event_rate_pct - self.comparator_event_rate_pct
 
     @property
     def nnt(self) -> Optional[float]:

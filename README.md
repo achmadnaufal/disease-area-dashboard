@@ -1,8 +1,8 @@
-# Disease Area Dashboard
-
-![Python](https://img.shields.io/badge/python-3.9%2B-blue?logo=python)
+![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Last Commit](https://img.shields.io/github/last-commit/achmadnaufal/disease-area-dashboard)
+
+# Disease Area Dashboard
 
 Pharma BI dashboard for disease area market intelligence — brand market share, MAT trend tracking, HCP segmentation, and Share of Voice analytics using IQVIA/Veeva CRM-style data.
 
@@ -83,12 +83,34 @@ path = dash.export_report(df, output_path="output/report.csv")
 ```mermaid
 graph TD
     A[CSV / Excel\nIQVIA / Veeva CRM] --> B[DiseaseAreaDashboard]
-    B --> C[Market Share\nTRx · NRx · Sales]
-    B --> D[MAT Trend\n12-month rolling]
-    B --> E[Brand Segmentation\nLeader/Challenger/Niche]
-    B --> F[Share of Voice\nDetailing visits]
-    B --> G[HCP Segmentation\nChampion/High-Vol/Loyal]
+
+    subgraph Core Analytics
+        B --> C[Market Share\nTRx · NRx · Sales]
+        B --> D[MAT Trend\n12-month rolling]
+        B --> E[Brand Segmentation\nLeader/Challenger/Niche]
+        B --> F[Share of Voice\nDetailing visits]
+        B --> G[HCP Segmentation\nChampion/High-Vol/Loyal]
+    end
+
+    subgraph Pharmacovigilance
+        A --> SD[SignalDetector\nPRR · ROR · BCPNN · EBGM]
+    end
+
+    subgraph Clinical & Patient
+        A --> CTS[ClinicalTrialScreener\nEligibility matching]
+        A --> PRS[PatientRiskStratifier\nRisk scoring & tiers]
+        A --> CNA[ComorbidityNetworkAnalyzer\nDisease co-occurrence]
+    end
+
+    subgraph Market Access & RWE
+        A --> BIA[BudgetImpactAnalyzer\nTherapy area cost model]
+        A --> MPE[MarketPenetrationEstimator\nUptake forecasting]
+        A --> RWE[RWEAnalyzer\nReal-world evidence\nARR · NNT · GRACE]
+    end
+
     C & D & E & F & G --> H[CSV Report Export]
+    SD & CTS & PRS & CNA --> H
+    BIA & MPE & RWE --> H
 ```
 
 ## Screenshots / Demo Output

@@ -76,8 +76,8 @@ class TestRWEStudy:
         assert abs(s.nnt - (100 / 14)) < 0.1
 
     def test_nnt_none_when_no_benefit(self):
-        s = make_study(brand_rate=50, comparator_rate=30)
-        # comparator_rate > brand_rate → ARR negative → no benefit
+        s = make_study(brand_rate=30, comparator_rate=50)
+        # brand_rate < comparator_rate → ARR negative → no benefit
         assert s.nnt is None
 
     def test_significance(self):
