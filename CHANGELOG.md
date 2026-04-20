@@ -1,3 +1,23 @@
+## [0.7.0] - 2026-04-21
+
+### Added
+- **UnmetNeedScorer** (`src/unmet_need_scorer.py`) — IMI BEACON-aligned composite unmet-need scorer for disease-area portfolio prioritisation
+  - `DiseaseAreaProfile` dataclass (frozen): DALYs per 100k (IHME GBD), 5-year response rate, Grade 3+ AE rate, reimbursed coverage fraction, HRQoL decrement, optional prevalence and therapy area, with full range validation
+  - `UnmetNeedScorer`: closed-portfolio min-max normalisation across 5 sub-dimensions (burden, effectiveness gap, safety, access, HRQoL) combined into a 0-100 composite
+  - Configurable weight overrides (auto-renormalised) with immutable `with_weights()` fork
+  - `score_portfolio()`, `score_for()`, `top_n()`, `tier_distribution()`, `sub_score_table()`, `full_report()`
+  - Priority tiering: CRITICAL (>=75) / HIGH (>=55) / MODERATE (>=35) / LOW
+  - Immutable profile tuple snapshot and inverted normalisation for effectiveness / coverage dimensions
+- **Unit tests** — 42 tests in `tests/test_unmet_need_scorer.py` covering validation, weight handling, normalisation, tiering, and reporting
+- **Sample data** — `sample_data/unmet_need_scorer_data.csv` with 20 oncology, cardiometabolic, immunology, respiratory, neurology, mental-health, and rare-disease indications
+- **README** — added Unmet Need Scoring feature bullet and runnable snippet
+
+### References
+- IHME (2020) Global Burden of Disease Study 2019. Lancet 396:1204-22
+- EFPIA (2021) Unmet Medical Need: A Framework for Assessment
+- Vreman R. et al. (2019) Value in Health 22(11):1275-82
+- IMI BEACON consortium (2022) MCDA for unmet need prioritisation in oncology
+
 ## [0.6.0] - 2026-04-14
 
 ### Added

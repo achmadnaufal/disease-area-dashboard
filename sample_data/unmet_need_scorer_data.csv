@@ -1,0 +1,21 @@
+disease_area,therapy_area,daly_per_100k,five_year_response_rate,grade3_ae_rate,reimbursed_coverage,hrqol_decrement,prevalence_per_100k
+NSCLC,Oncology,310.0,0.22,0.38,0.55,0.42,60.0
+HER2+ Breast Cancer,Oncology,260.0,0.55,0.24,0.72,0.30,45.0
+Triple-Negative Breast Cancer,Oncology,285.0,0.18,0.36,0.50,0.48,18.0
+Pancreatic Cancer,Oncology,340.0,0.09,0.42,0.45,0.58,12.0
+Multiple Myeloma,Oncology,190.0,0.48,0.30,0.62,0.40,24.0
+T2DM,Cardiometabolic,620.0,0.68,0.08,0.92,0.17,9800.0
+HFrEF,Cardiometabolic,480.0,0.40,0.18,0.80,0.38,2200.0
+Atrial Fibrillation,Cardiometabolic,210.0,0.62,0.10,0.88,0.22,3300.0
+Chronic Kidney Disease Stage 4,Cardiometabolic,360.0,0.35,0.22,0.68,0.44,280.0
+Rheumatoid Arthritis,Immunology,220.0,0.60,0.15,0.78,0.35,550.0
+Systemic Lupus Erythematosus,Immunology,245.0,0.42,0.28,0.60,0.45,90.0
+Ulcerative Colitis,Immunology,140.0,0.58,0.14,0.74,0.32,420.0
+Atopic Dermatitis (moderate-severe),Immunology,110.0,0.55,0.09,0.65,0.34,800.0
+COPD (GOLD III-IV),Respiratory,380.0,0.30,0.16,0.70,0.47,1450.0
+Severe Asthma,Respiratory,180.0,0.50,0.11,0.78,0.33,720.0
+Alzheimer's Disease,Neurology,450.0,0.12,0.20,0.48,0.55,820.0
+Parkinson's Disease,Neurology,215.0,0.28,0.17,0.66,0.42,170.0
+Major Depressive Disorder,Mental Health,330.0,0.45,0.12,0.72,0.40,4200.0
+Duchenne Muscular Dystrophy,Rare Disease,95.0,0.05,0.30,0.40,0.65,0.3
+Sickle Cell Disease,Rare Disease,160.0,0.25,0.28,0.42,0.52,40.0

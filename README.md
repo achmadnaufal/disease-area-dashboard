@@ -15,6 +15,7 @@ Pharma BI dashboard for disease area market intelligence — brand market share,
 - **HCP prescriber segmentation** — Champion / High-Volume / Loyal-Mid / Low-Activity / Opportunity
 - **Budget impact analysis** — therapy area cost modelling
 - **Pharmacovigilance signal detection** — PRR/ROR disproportionality analysis, BCPNN/EBGM Bayesian screening, temporal Poisson scan, subpopulation-stratified signals, and composite priority ranking
+- **Unmet need composite scoring** — IMI BEACON-aligned disease-area prioritisation blending disease burden (IHME GBD DALYs), 5-year effectiveness gap, Grade 3+ AE burden, reimbursed coverage gap, and HRQoL decrement into a 0-100 composite with CRITICAL/HIGH/MODERATE/LOW tiers
 - Supports CSV and Excel input (IQVIA, Veeva CRM, in-house formats)
 
 ## Tech Stack
@@ -71,6 +72,24 @@ ranked = detector.priority_ranking(signals, top_n=10)
 print(ranked.head())
 report = detector.generate_report(reports, top_n=20, min_reports=3)
 print(report[["drug", "event", "composite_score", "recommended_action"]])
+
+# Unmet need scoring — prioritise disease areas for portfolio planning
+from src.unmet_need_scorer import UnmetNeedScorer, DiseaseAreaProfile
+
+scorer = UnmetNeedScorer()
+scorer.add(DiseaseAreaProfile(
+    disease_area="NSCLC", daly_per_100k=310.0,
+    five_year_response_rate=0.22, grade3_ae_rate=0.38,
+    reimbursed_coverage=0.55, hrqol_decrement=0.42,
+))
+scorer.add(DiseaseAreaProfile(
+    disease_area="T2DM", daly_per_100k=620.0,
+    five_year_response_rate=0.68, grade3_ae_rate=0.08,
+    reimbursed_coverage=0.92, hrqol_decrement=0.17,
+))
+for s in scorer.score_portfolio():
+    print(s.disease_area, s.tier, s.composite_score)
+print(scorer.full_report()["tier_distribution"])
 ```
 
 **Step 5: Export report**
